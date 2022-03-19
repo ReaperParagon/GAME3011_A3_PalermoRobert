@@ -1,0 +1,33 @@
+{
+    "name": "MinigameInputActions",
+    "maps": [
+        {
+            "name": "Match3ActionMap",
+            "id": "0c08f1f4-cd01-4486-a142-166e2b8323ae",
+            "actions": [
+                {
+                    "name": "TryMoveObject",
+                    "type": "Button",
+                    "id": "2f9197d3-aa1e-418d-8f45-016bd4031a70",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "103e814a-fa22-4b7a-8f6a-88d2b8f4100d",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TryMoveObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
