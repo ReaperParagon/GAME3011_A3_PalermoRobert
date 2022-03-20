@@ -7,8 +7,8 @@ public class MatchThreeTile : MonoBehaviour
 {
     public static MatchThreeTile currentTile;
 
-    // Replace with a class / something
-    public Image item;
+    public Image icon;
+    public MatchThreeItem Item;
 
     public GameObject Tile { get; set; }
     public Vector2Int GridPosition { get; set; }
@@ -17,14 +17,19 @@ public class MatchThreeTile : MonoBehaviour
 
     private void Awake()
     {
-        if (item == null)
-            item = GetComponent<Image>();
+        if (icon == null)
+            icon = GetComponent<Image>();
+    }
 
-        float r = Random.Range(0.0f, 1.0f);
-        float g = Random.Range(0.0f, 1.0f);
-        float b = Random.Range(0.0f, 1.0f);
+    public void Init(GameObject _tile, Vector2Int _pos, MatchThreeItem _item)
+    {
+        Tile = _tile;
+        GridPosition = _pos;
+        Item = _item;
 
-        item.color = new Color(r, g, b, 1.0f);
+        if (icon == null) icon = GetComponent<Image>();
+
+        SetupItem();
     }
 
     public void OnDrag()
@@ -37,15 +42,22 @@ public class MatchThreeTile : MonoBehaviour
         // Swap this with Current Tile
         if (currentTile == this || currentTile == null) return;
 
-        Color c = currentTile.item.color;
+        MatchThreeItem _item = currentTile.Item;
 
-        currentTile.SetTileSprite(item.color);
-        SetTileSprite(c);
+        currentTile.SetTileItem(Item);
+        SetTileItem(_item);
     }
 
-    private void SetTileSprite(Color color)
+    private void SetTileItem(MatchThreeItem _item)
     {
-        item.color = color;
+        Item = _item;
+
+        SetupItem();
+    }
+
+    private void SetupItem()
+    {
+        icon.sprite = Item.itemSprite;
     }
 
 }

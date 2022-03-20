@@ -13,6 +13,7 @@ public class MatchThreeBoard : MonoBehaviour
     [Header("Grid Tile Information")]
     [SerializeField]
     private GameObject TilePrefab;
+    public MatchThreeObjectList ItemList;
 
     void Awake()
     {
@@ -31,8 +32,7 @@ public class MatchThreeBoard : MonoBehaviour
 
             MatchThreeTile matchTile = tile.GetComponent<MatchThreeTile>();
 
-            matchTile.Tile = tile;
-            matchTile.GridPosition = new Vector2Int(gridX, gridY);
+            matchTile.Init(tile, new Vector2Int(gridX, gridY), ItemList.GetRandomItem());
 
             // Check our Grid size
             if (gridX > GridTiles.Count - 1)
