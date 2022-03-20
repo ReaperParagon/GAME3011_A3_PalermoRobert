@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum CloseTilePositions
+{
+    Left, Right, Top, Bottom
+}
+
 public class MatchThreeTile : MonoBehaviour
 {
     public static MatchThreeTile currentTile;
+    public static MatchThreeBoard board;
 
     public Image icon;
     public MatchThreeItem Item;
@@ -15,10 +21,15 @@ public class MatchThreeTile : MonoBehaviour
 
     public List<MatchThreeTile> CloseTiles = new List<MatchThreeTile>();
 
+    public bool wasVisited = false;
+
     private void Awake()
     {
         if (icon == null)
             icon = GetComponent<Image>();
+
+        if (board == null)
+            board = FindObjectOfType<MatchThreeBoard>();
     }
 
     public void Init(GameObject _tile, Vector2Int _pos, MatchThreeItem _item)
@@ -39,13 +50,25 @@ public class MatchThreeTile : MonoBehaviour
 
     public void OnRelease()
     {
-        // Swap this with Current Tile
+        // If we have a current tile
         if (currentTile == this || currentTile == null) return;
 
-        MatchThreeItem _item = currentTile.Item;
+        // Check if it is a close tile
+        if (!CheckIsClose(currentTile)) return;
 
-        currentTile.SetTileItem(Item);
-        SetTileItem(_item);
+        SwapItem(this, currentTile);
+
+        // Check if it completes a set, if not, swap back
+        if (!board.CheckIsMatched(this, currentTile))
+            SwapItem(this, currentTile);
+    }
+
+    private static void SwapItem(MatchThreeTile thisTile, MatchThreeTile thatTile)
+    {
+        MatchThreeItem _item = thatTile.Item;
+
+        thatTile.SetTileItem(thisTile.Item);
+        thisTile.SetTileItem(_item);
     }
 
     private void SetTileItem(MatchThreeItem _item)
@@ -58,6 +81,22 @@ public class MatchThreeTile : MonoBehaviour
     private void SetupItem()
     {
         icon.sprite = Item.itemSprite;
+    }
+
+    private bool CheckIsClose(MatchThreeTile tile)
+    {
+        foreach (MatchThreeTile t in CloseTiles)
+        {
+            if (tile == t)
+                return true;
+        }
+
+        return false;
+    }
+
+    public MatchThreeTile GetCloseTile(CloseTilePositions pos)
+    {
+        return CloseTiles[(int)pos];
     }
 
 }

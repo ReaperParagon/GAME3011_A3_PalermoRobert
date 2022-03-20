@@ -62,20 +62,16 @@ public class MatchThreeBoard : MonoBehaviour
         int y = gridPosition.y;
 
         // Left
-        if (x - 1 >= 0)
-            rTileList.Add(GetTileAtPosition(x - 1, y));
+        rTileList.Add(x - 1 >= 0 ? GetTileAtPosition(x - 1, y) : null);
 
         // Right
-        if (x + 1 <= GridTiles.Count - 1)
-            rTileList.Add(GetTileAtPosition(x + 1, y));
+        rTileList.Add(x + 1 <= GridTiles.Count - 1 ? GetTileAtPosition(x + 1, y) : null);
 
         // Top
-        if (y > 0)
-            rTileList.Add(GetTileAtPosition(x, y - 1));
+        rTileList.Add(y > 0 ? GetTileAtPosition(x, y - 1) : null);
 
         // Bottom
-        if (y < GridTiles[0].Count - 1)
-            rTileList.Add(GetTileAtPosition(x, y + 1));
+        rTileList.Add(y < GridTiles[0].Count - 1 ? GetTileAtPosition(x, y + 1) : null);
 
         return rTileList;
     }
@@ -85,4 +81,96 @@ public class MatchThreeBoard : MonoBehaviour
         return GridTiles[x][y];
     }
 
+    public bool CheckIsMatched(MatchThreeTile thisTile, MatchThreeTile thatTile)
+    {
+        return (CheckIsMatched(thisTile) || CheckIsMatched(thatTile));
+    }
+
+    private bool CheckIsMatched(MatchThreeTile tile)
+    {
+        int matchCount = 1;
+
+        // Horizontal
+        CheckIsMatchedHorizontal(ref matchCount, tile);
+
+        if (matchCount >= 3) return MatchTiles();
+        matchCount = 1;
+
+        ResetVisited();
+
+        // Vertical
+        CheckIsMatchedVertical(ref matchCount, tile);
+
+        if (matchCount >= 3) return MatchTiles();
+        matchCount = 1;
+
+        ResetVisited();
+
+        return false;
+    }
+
+    private void CheckIsMatchedHorizontal(ref int matchCount, MatchThreeTile tile)
+    {
+        tile.wasVisited = true;
+
+        // Left
+        MatchThreeTile leftTile = tile.GetCloseTile(CloseTilePositions.Left);
+        if (leftTile != null && !leftTile.wasVisited && leftTile.Item == tile.Item)
+        {
+            matchCount++;
+            CheckIsMatchedHorizontal(ref matchCount, leftTile);
+        }
+
+        // Right
+        MatchThreeTile rightTile = tile.GetCloseTile(CloseTilePositions.Right);
+        if (rightTile != null && !rightTile.wasVisited && rightTile.Item == tile.Item)
+        {
+            matchCount++;
+            CheckIsMatchedHorizontal(ref matchCount, rightTile);
+        }
+    }
+
+    private void CheckIsMatchedVertical(ref int matchCount, MatchThreeTile tile)
+    {
+        tile.wasVisited = true;
+
+        // Top
+        MatchThreeTile topTile = tile.GetCloseTile(CloseTilePositions.Top);
+        if (topTile != null && !topTile.wasVisited && topTile.Item == tile.Item)
+        {
+            matchCount++;
+            CheckIsMatchedVertical(ref matchCount, topTile);
+        }
+
+        // Bottom
+        MatchThreeTile botTile = tile.GetCloseTile(CloseTilePositions.Bottom);
+        if (botTile != null && !botTile.wasVisited && botTile.Item == tile.Item)
+        {
+            matchCount++;
+            CheckIsMatchedVertical(ref matchCount, botTile);
+        }
+    }
+
+    private bool MatchTiles()
+    {
+        // Erase the matched tiles
+
+        // Tell Tiles to move down
+
+        // Calculate score
+
+        ResetVisited();
+        return true;
+    }
+
+    private void ResetVisited()
+    {
+        foreach (List<MatchThreeTile> list in GridTiles)
+        {
+            foreach (MatchThreeTile tile in list)
+            {
+                tile.wasVisited = false;
+            }
+        }
+    }
 }
