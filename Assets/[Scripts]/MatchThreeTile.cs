@@ -23,6 +23,8 @@ public class MatchThreeTile : MonoBehaviour
 
     public bool wasVisited = false;
 
+    private Animator animator;
+
     private void Awake()
     {
         if (icon == null)
@@ -30,6 +32,8 @@ public class MatchThreeTile : MonoBehaviour
 
         if (board == null)
             board = FindObjectOfType<MatchThreeBoard>();
+
+        animator = GetComponent<Animator>();
     }
 
     public void Init(GameObject _tile, Vector2Int _pos, MatchThreeItem _item)
@@ -53,6 +57,9 @@ public class MatchThreeTile : MonoBehaviour
         // If we have a current tile
         if (currentTile == this || currentTile == null) return;
 
+        // If this tile has something in it
+        if (Item == null || currentTile.Item == null) return;
+
         // Check if it is a close tile
         if (!CheckIsClose(currentTile)) return;
 
@@ -71,16 +78,23 @@ public class MatchThreeTile : MonoBehaviour
         thisTile.SetTileItem(_item);
     }
 
-    private void SetTileItem(MatchThreeItem _item)
+    public void SetTileItem(MatchThreeItem _item)
     {
         Item = _item;
-
         SetupItem();
     }
 
     private void SetupItem()
     {
+        if (Item == null)
+        {
+            icon.sprite = null;
+            icon.enabled = false;
+            return;
+        }
+
         icon.sprite = Item.itemSprite;
+        icon.enabled = true;
     }
 
     private bool CheckIsClose(MatchThreeTile tile)
@@ -97,6 +111,17 @@ public class MatchThreeTile : MonoBehaviour
     public MatchThreeTile GetCloseTile(CloseTilePositions pos)
     {
         return CloseTiles[(int)pos];
+    }
+
+    public void Remove()
+    {
+        Item = null;
+        SetupItem();
+    }
+
+    public void PlayAnimation()
+    {
+        animator.SetTrigger("AnimTrigger");
     }
 
 }

@@ -764,9 +764,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2a57874842d8c4385a0f65a9ef6e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridDimensions: {x: 16, y: 9}
+  GridDimensions: {x: 5, y: 5}
   TilePrefab: {fileID: 7237453030489502420, guid: 0765dd84e94dd304e8c52eb2fea690a0, type: 3}
   ItemList: {fileID: 11400000, guid: 2891b70bf7ce57d45acbbae19f38d93d, type: 2}
+  animationWaitTime: 0.166666
 --- !u!1 &2038419534
 GameObject:
   m_ObjectHideFlags: 0

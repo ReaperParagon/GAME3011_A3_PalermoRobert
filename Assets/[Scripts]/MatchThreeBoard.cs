@@ -15,6 +15,12 @@ public class MatchThreeBoard : MonoBehaviour
     private GameObject TilePrefab;
     public MatchThreeObjectList ItemList;
 
+    private List<MatchThreeTile> MatchTileList = new List<MatchThreeTile>();
+    private IEnumerator CheckTilesCoroutine_Ref = null;
+
+    public float animationWaitTime = 1.0f;
+    private Queue<IEnumerator> movingQueue = new Queue<IEnumerator>();
+
     void Awake()
     {
         // Setup Grid Layout
@@ -52,6 +58,70 @@ public class MatchThreeBoard : MonoBehaviour
                 mTile.CloseTiles.AddRange(GetCloseTiles(mTile.GridPosition));
             }
         }
+
+        CheckAllTiles();
+    }
+
+    private void UpdateTileContents(List<MatchThreeTile> emptyTiles)
+    {
+        // Disable player interaction
+
+        // Place Items into correct tiles
+        foreach (MatchThreeTile tile in emptyTiles)
+        {
+            movingQueue.Enqueue(MoveColumnDown(tile));
+        }
+
+        FlushQueue();
+
+        // Re-enable player interaction
+
+        // CheckAllTiles();
+    }
+
+    private void FlushQueue()
+    {
+        if (movingQueue.Count > 0)
+            StartCoroutine(movingQueue.Dequeue());
+    }
+
+    private IEnumerator MoveColumnDown(MatchThreeTile tile)
+    {
+        // This tile has an item in it
+        if (tile.Item != null) yield break;
+
+        MatchThreeTile top = tile.GetCloseTile(CloseTilePositions.Top);
+
+        // This tile is at the top
+        if (top == null)
+        {
+            tile.SetTileItem(ItemList.GetRandomItem());
+
+            // Play Animation
+            tile.PlayAnimation();
+            yield return new WaitForSeconds(animationWaitTime);
+
+            yield break;
+        }
+
+        // Move Down top Item
+        while (top.Item == null)
+            yield return StartCoroutine(MoveColumnDown(top));
+
+        if (tile.Item == null)
+        {
+            tile.SetTileItem(top.Item);
+            top.Remove();
+
+            // Play Animation
+            tile.PlayAnimation();
+            yield return new WaitForSeconds(animationWaitTime);
+
+            // This tile is at the bottom, start moving down tiles on top
+            yield return StartCoroutine(MoveColumnDown(top));
+        }
+
+        FlushQueue();
     }
 
     private List<MatchThreeTile> GetCloseTiles(Vector2Int gridPosition)
@@ -83,7 +153,10 @@ public class MatchThreeBoard : MonoBehaviour
 
     public bool CheckIsMatched(MatchThreeTile thisTile, MatchThreeTile thatTile)
     {
-        return (CheckIsMatched(thisTile) || CheckIsMatched(thatTile));
+        bool thisMatched = CheckIsMatched(thisTile);
+        bool thatMatched = CheckIsMatched(thatTile);
+
+        return (thisMatched || thatMatched);
     }
 
     private bool CheckIsMatched(MatchThreeTile tile)
@@ -97,6 +170,7 @@ public class MatchThreeBoard : MonoBehaviour
         matchCount = 1;
 
         ResetVisited();
+        MatchTileList.Clear();
 
         // Vertical
         CheckIsMatchedVertical(ref matchCount, tile);
@@ -105,6 +179,7 @@ public class MatchThreeBoard : MonoBehaviour
         matchCount = 1;
 
         ResetVisited();
+        MatchTileList.Clear();
 
         return false;
     }
@@ -112,6 +187,7 @@ public class MatchThreeBoard : MonoBehaviour
     private void CheckIsMatchedHorizontal(ref int matchCount, MatchThreeTile tile)
     {
         tile.wasVisited = true;
+        MatchTileList.Add(tile);
 
         // Left
         MatchThreeTile leftTile = tile.GetCloseTile(CloseTilePositions.Left);
@@ -133,6 +209,7 @@ public class MatchThreeBoard : MonoBehaviour
     private void CheckIsMatchedVertical(ref int matchCount, MatchThreeTile tile)
     {
         tile.wasVisited = true;
+        MatchTileList.Add(tile);
 
         // Top
         MatchThreeTile topTile = tile.GetCloseTile(CloseTilePositions.Top);
@@ -153,13 +230,23 @@ public class MatchThreeBoard : MonoBehaviour
 
     private bool MatchTiles()
     {
+        // Calculate score
+        // TODO: Implement score
+        int score = MatchTileList.Count * MatchTileList.Count;
+
+        List<MatchThreeTile> removedTiles = MatchTileList;
+
         // Erase the matched tiles
+        foreach (MatchThreeTile tile in MatchTileList)
+        {
+            tile.Remove();
+        }
 
         // Tell Tiles to move down
-
-        // Calculate score
+        UpdateTileContents(removedTiles);
 
         ResetVisited();
+        MatchTileList.Clear();
         return true;
     }
 
@@ -172,5 +259,28 @@ public class MatchThreeBoard : MonoBehaviour
                 tile.wasVisited = false;
             }
         }
+    }
+
+    private void CheckAllTiles()
+    {
+        if (CheckTilesCoroutine_Ref == null)
+        {
+            CheckTilesCoroutine_Ref = CheckAllTilesForMatch();
+            StartCoroutine(CheckTilesCoroutine_Ref);
+        }
+    }
+
+    private IEnumerator CheckAllTilesForMatch()
+    {
+        foreach (List<MatchThreeTile> list in GridTiles)
+        {
+            foreach (MatchThreeTile tile in list)
+            {
+                if (CheckIsMatched(tile))
+                    yield return new WaitForSeconds(1.0f);
+            }
+        }
+
+        CheckTilesCoroutine_Ref = null;
     }
 }
