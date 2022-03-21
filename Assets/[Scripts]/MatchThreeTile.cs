@@ -24,6 +24,8 @@ public class MatchThreeTile : MonoBehaviour
     public bool wasVisited = false;
 
     private Animator animator;
+    public float animationWaitTime = 0.1666f;
+    private bool playingAnimation = false;
 
     private void Awake()
     {
@@ -113,6 +115,18 @@ public class MatchThreeTile : MonoBehaviour
         return CloseTiles[(int)pos];
     }
 
+    public bool GetIsEmptySpace(CloseTilePositions dir)
+    {
+        // If we are at the edge, return false
+        if (GetCloseTile(dir) == null) return false;
+
+        // If there is an item in that space, keep going
+        if (GetCloseTile(dir).Item != null) return GetCloseTile(dir).GetIsEmptySpace(dir);
+
+        // There is empty space
+        return true;
+    }
+
     public void Remove()
     {
         Item = null;
@@ -121,7 +135,49 @@ public class MatchThreeTile : MonoBehaviour
 
     public void PlayAnimation()
     {
+        if (!GetIsEmptySpace(CloseTilePositions.Bottom)) playingAnimation = false;
+
+        if (playingAnimation) return;
+
+        playingAnimation = true;
         animator.SetTrigger("AnimTrigger");
+    }
+
+    public IEnumerator MoveColumnDown()
+    {
+        // This tile has an item in it
+        if (Item != null) yield break;
+
+        MatchThreeTile top = GetCloseTile(CloseTilePositions.Top);
+
+        // This tile is at the top
+        if (top == null)
+        {
+            SetTileItem(board.ItemList.GetRandomItem());
+
+            // Play Animation
+            PlayAnimation();
+            yield return new WaitForSeconds(animationWaitTime);
+
+            yield break;
+        }
+
+        // Move Down top Item
+        while (top.Item == null)
+            yield return StartCoroutine(top.MoveColumnDown());
+
+        if (Item == null)
+        {
+            SetTileItem(top.Item);
+            top.Remove();
+
+            // Play Animation
+            PlayAnimation();
+            yield return new WaitForSeconds(animationWaitTime);
+
+            // This tile is at the bottom, start moving down tiles on top
+            yield return StartCoroutine(top.MoveColumnDown());
+        }
     }
 
 }
