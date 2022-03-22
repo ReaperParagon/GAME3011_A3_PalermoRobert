@@ -24,11 +24,13 @@ public class ScoreScript : MonoBehaviour
     private void OnEnable()
     {
         MatchThreeEvents.AddScore += AddScore;
+        MatchThreeEvents.MiniGameStart += Setup;
     }
 
     private void OnDisable()
     {
         MatchThreeEvents.AddScore -= AddScore;
+        MatchThreeEvents.MiniGameStart -= Setup;
     }
 
 
@@ -53,7 +55,7 @@ public class ScoreScript : MonoBehaviour
     private IEnumerator AnimateAddScore(int score)
     {
         // Display added score
-        tempAddScoreObject = Instantiate(scoreAddUI, transform);
+        tempAddScoreObject = Instantiate(scoreAddUI, scoreUI.transform);
         tempAddScoreObject.GetComponent<TextMeshProUGUI>().text = "+" + score;
 
         yield return new WaitForSeconds(animationTime);
@@ -72,6 +74,14 @@ public class ScoreScript : MonoBehaviour
         scoreUI.text = Score.ToString();
 
         AnimateAddScoreCoroutine_Ref = null;
+    }
+
+    private void Setup(DifficultyLevel _)
+    {
+        Score = 0;
+        scoreUI.text = "0";
+        if (tempAddScoreObject != null)
+            Destroy(tempAddScoreObject);
     }
 
 }

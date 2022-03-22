@@ -12,7 +12,6 @@ public class ToggleScreenButton
     public List<GameObject> hideGameObjects = new List<GameObject>();
     public UnityEvent showEvents = new UnityEvent();
     public UnityEvent hideEvents = new UnityEvent();
-    public bool IsShown;
 
     /// Functions ///
 
@@ -26,24 +25,23 @@ public class ToggleScreenButton
 
     public void ToggleGameObjects()
     {
-        ShowGameObjects(!IsShown);
+        if (showGameObjects.Count > 0)
+            ShowGameObjects(!showGameObjects[0].activeSelf);
     }
 
     private void ShowGameObjects(bool show)
     {
-        IsShown = show;
-
         UnityEvent events = show ? showEvents : hideEvents;
         events.Invoke();
 
         foreach (GameObject go in showGameObjects)
         {
-            go.SetActive(IsShown);
+            go.SetActive(show);
         }
 
         foreach (GameObject go in hideGameObjects)
         {
-            go.SetActive(!IsShown);
+            go.SetActive(!show);
         }
     }
 }
