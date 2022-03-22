@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class MatchThreeMinigameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void StartMinigame(DifficultyLevel difficulty)
     {
-        
+        MatchThreeEvents.InvokeOnMiniGameStart(difficulty);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StartMinigame(int difficulty)
     {
-        
+        MatchThreeEvents.InvokeOnMiniGameStart((DifficultyLevel)difficulty);
     }
 }
