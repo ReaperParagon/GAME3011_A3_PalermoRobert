@@ -37,4 +37,15 @@ public class MatchThreeEvents
         MiniGameComplete?.Invoke();
     }
 
+    /// Add Score ///
+
+    public delegate void OnAddScore(int score);
+
+    public static event OnAddScore AddScore;
+
+    public static void InvokeOnAddScore(int score)
+    {
+        AddScore?.Invoke(score);
+    }
+
 }

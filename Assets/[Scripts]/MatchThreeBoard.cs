@@ -60,7 +60,8 @@ public class MatchThreeBoard : MonoBehaviour
             }
         }
 
-        // CheckAllTiles();
+        // Check for matches on start
+        CheckAllTiles();
     }
 
     private void UpdateTileContents()
@@ -79,6 +80,8 @@ public class MatchThreeBoard : MonoBehaviour
         {
             yield return StartCoroutine(movingQueue.Dequeue().MoveColumnDown());
         }
+
+        CheckAllTiles();
     }
 
     private List<MatchThreeTile> GetCloseTiles(Vector2Int gridPosition)
@@ -158,14 +161,14 @@ public class MatchThreeBoard : MonoBehaviour
 
         // Left
         MatchThreeTile leftTile = tile.GetCloseTile(CloseTilePositions.Left);
-        if (leftTile != null && !leftTile.wasVisited && leftTile.Item == tile.Item)
+        if (leftTile != null && !leftTile.wasVisited && tile.Item != null && leftTile.Item == tile.Item)
         {
             CheckIsMatchedHorizontal(leftTile);
         }
 
         // Right
         MatchThreeTile rightTile = tile.GetCloseTile(CloseTilePositions.Right);
-        if (rightTile != null && !rightTile.wasVisited && rightTile.Item == tile.Item)
+        if (rightTile != null && !rightTile.wasVisited && tile.Item != null && rightTile.Item == tile.Item)
         {
             CheckIsMatchedHorizontal(rightTile);
         }
@@ -178,14 +181,14 @@ public class MatchThreeBoard : MonoBehaviour
 
         // Top
         MatchThreeTile topTile = tile.GetCloseTile(CloseTilePositions.Top);
-        if (topTile != null && !topTile.wasVisited && topTile.Item == tile.Item)
+        if (topTile != null && !topTile.wasVisited && tile.Item != null && topTile.Item == tile.Item)
         {
             CheckIsMatchedVertical(topTile);
         }
 
         // Bottom
         MatchThreeTile botTile = tile.GetCloseTile(CloseTilePositions.Bottom);
-        if (botTile != null && !botTile.wasVisited && botTile.Item == tile.Item)
+        if (botTile != null && !botTile.wasVisited && tile.Item != null && botTile.Item == tile.Item)
         {
             CheckIsMatchedVertical(botTile);
         }
@@ -194,8 +197,8 @@ public class MatchThreeBoard : MonoBehaviour
     private bool MatchTiles()
     {
         // Calculate score
-        // TODO: Implement score
         int score = MatchTileList.Count * MatchTileList.Count;
+        MatchThreeEvents.InvokeOnAddScore(score);
 
         // Erase the matched tiles
         foreach (MatchThreeTile tile in MatchTileList)
@@ -237,9 +240,11 @@ public class MatchThreeBoard : MonoBehaviour
             foreach (MatchThreeTile tile in list)
             {
                 if (CheckIsMatched(tile))
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForSeconds(0.0f);
             }
         }
+
+        UpdateTileContents();
 
         CheckTilesCoroutine_Ref = null;
     }
