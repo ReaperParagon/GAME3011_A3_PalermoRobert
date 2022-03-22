@@ -688,7 +688,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 99999
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -780,6 +780,30 @@ MonoBehaviour:
   scoreUI: {fileID: 728956983}
   scoreAddUI: {fileID: 1508676713367977799, guid: 9eb9001804f38834889a3df82e07afc8, type: 3}
   animationTime: 1
+  tickUpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.1
+      inSlope: -0.0042516226
+      outSlope: -0.0042516226
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.30372748
+    - serializedVersion: 3
+      time: 3
+      value: 0.01
+      inSlope: -0.08267891
+      outSlope: -0.08267891
+      tangentMode: 0
+      weightedMode: 1
+      inWeight: 0.11518756
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &746434007
 GameObject:
   m_ObjectHideFlags: 0

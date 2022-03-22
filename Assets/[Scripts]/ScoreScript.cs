@@ -11,9 +11,10 @@ public class ScoreScript : MonoBehaviour
     [SerializeField]
     private GameObject scoreAddUI;
     public float animationTime = 1.0f;
+    public AnimationCurve tickUpCurve;
 
     public int Score { get; private set; }
-    private int tickUpScore;
+    private float tickUpScore;
     private int tempAddingScore;
     private GameObject tempAddScoreObject;
 
@@ -33,7 +34,6 @@ public class ScoreScript : MonoBehaviour
 
     private void AddScore(int score)
     {
-        tickUpScore = Score;
         Score += score;
 
         int scoreToAdd = score;
@@ -45,14 +45,13 @@ public class ScoreScript : MonoBehaviour
             scoreToAdd = score + tempAddingScore;
         }
 
+        tempAddingScore = scoreToAdd;
         AnimateAddScoreCoroutine_Ref = AnimateAddScore(scoreToAdd);
         StartCoroutine(AnimateAddScoreCoroutine_Ref);
     }
 
     private IEnumerator AnimateAddScore(int score)
     {
-        tempAddingScore = score;
-
         // Display added score
         tempAddScoreObject = Instantiate(scoreAddUI, transform);
         tempAddScoreObject.GetComponent<TextMeshProUGUI>().text = "+" + score;
@@ -60,11 +59,14 @@ public class ScoreScript : MonoBehaviour
         yield return new WaitForSeconds(animationTime);
         Destroy(tempAddScoreObject);
 
+        tickUpScore = float.Parse(scoreUI.text);
+
         // Tick up score UI to the added score total
-        for (; tickUpScore < Score; tickUpScore += 1)
+        for (float t = 0; tickUpScore < Score; tickUpScore += 1)
         {
-            scoreUI.text = tickUpScore.ToString();
-            yield return new WaitForSeconds(0.1f);
+            t += 0.1f;
+            scoreUI.text = ((int)tickUpScore).ToString();
+            yield return new WaitForSeconds(tickUpCurve.Evaluate(t));
         }
 
         scoreUI.text = Score.ToString();
