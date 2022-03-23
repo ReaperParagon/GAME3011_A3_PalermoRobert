@@ -56,6 +56,9 @@ public class MatchThreeTile : MonoBehaviour
 
     public void OnRelease()
     {
+        // If we are allowed input
+        if (!MatchThreeBoard.allowInput) return;
+
         // If we have a current tile
         if (currentTile == this || currentTile == null) return;
 

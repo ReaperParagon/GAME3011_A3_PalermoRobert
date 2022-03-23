@@ -27,13 +27,15 @@ public class TimerScript : MonoBehaviour
 
     private void OnEnable()
     {
-        MatchThreeEvents.MiniGameStart += StartTimer;
+        MatchThreeEvents.MiniGameStart += SetupTimer;
+        MatchThreeEvents.BoardSetup += StartTimer;
         MatchThreeEvents.MiniGameComplete += StopTimer;
     }
 
     private void OnDisable()
     {
-        MatchThreeEvents.MiniGameStart -= StartTimer;
+        MatchThreeEvents.MiniGameStart -= SetupTimer;
+        MatchThreeEvents.BoardSetup -= StartTimer;
         MatchThreeEvents.MiniGameComplete -= StopTimer;
     }
 
@@ -51,11 +53,16 @@ public class TimerScript : MonoBehaviour
 
     /// Functions ///
 
-    public void StartTimer(DifficultyLevel difficultyLevel)
+    public void SetupTimer(DifficultyLevel difficultyLevel)
     {
         currentDifficulty = difficultyLevel;
 
         timeRemaining = 15.0f * Mathf.FloorToInt(timerCurve.Evaluate((int)currentDifficulty));
+        UpdateTimerText();
+    }
+    
+    public void StartTimer()
+    {
         timerEnabled = true;
     }
 

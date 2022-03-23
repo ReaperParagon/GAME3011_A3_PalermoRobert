@@ -23,18 +23,18 @@ public class MatchThreeBoard : MonoBehaviour
     public float animationWaitTime = 1.0f;
     private Queue<MatchThreeTile> movingQueue = new Queue<MatchThreeTile>();
 
+    private bool SettingUpBoard = true;
+    public static bool allowInput { private set; get; } = false;
+
+
     private void OnEnable()
     {
         MatchThreeEvents.MiniGameStart += Setup;
-        // MatchThreeEvents.MiniGameComplete += StopGame;
-        // MatchThreeEvents.TimerFinished += StopGame;
     }
 
     private void OnDisable()
     {
         MatchThreeEvents.MiniGameStart -= Setup;
-        // MatchThreeEvents.MiniGameComplete -= StopGame;
-        // MatchThreeEvents.TimerFinished -= StopGame;
     }
 
     private void UpdateTileContents()
@@ -52,6 +52,16 @@ public class MatchThreeBoard : MonoBehaviour
         while (movingQueue.Count > 0)
         {
             yield return StartCoroutine(movingQueue.Dequeue().MoveColumnDown());
+        }
+
+        if (SettingUpBoard)
+        {
+            SettingUpBoard = false;
+            allowInput = true;
+
+            // Pause, say start, etc.
+
+            MatchThreeEvents.InvokeOnBoardSetup();
         }
 
         CheckAllTiles();
@@ -269,13 +279,10 @@ public class MatchThreeBoard : MonoBehaviour
             }
         }
 
+        SettingUpBoard = true;
+        allowInput = false;
+
         // Check for matches on start
         CheckAllTiles();
-    }
-
-    public void StopGame()
-    {
-        StopAllCoroutines();
-        CheckTilesCoroutine_Ref = null;
     }
 }

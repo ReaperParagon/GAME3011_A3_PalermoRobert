@@ -26,6 +26,18 @@ public class MatchThreeEvents
         MiniGameStart?.Invoke(difficultyLevel);
     }
 
+    /// Board Setup ///
+
+    public delegate void OnBoardSetup();
+
+    public static event OnBoardSetup BoardSetup;
+
+    public static void InvokeOnBoardSetup()
+    {
+        BoardSetup?.Invoke();
+    }
+
+
     /// Minigame Complete ///
 
     public delegate void OnMiniGameComplete();
