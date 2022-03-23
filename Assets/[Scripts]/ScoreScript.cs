@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class ScoreScript : MonoBehaviour
 {
     [Header("UI")]
+    public Slider progressBar;
     [SerializeField]
     private TextMeshProUGUI scoreUI;
     [SerializeField]
@@ -19,7 +21,7 @@ public class ScoreScript : MonoBehaviour
     private GameObject tempAddScoreObject;
 
     private IEnumerator AnimateAddScoreCoroutine_Ref = null;
-
+    private bool GameOver = false;
 
     private void OnEnable()
     {
@@ -36,7 +38,17 @@ public class ScoreScript : MonoBehaviour
 
     private void AddScore(int score)
     {
+        if (GameOver) return;
+
         Score += score;
+        progressBar.value = Score;
+
+        // Check for win
+        if (progressBar.value >= progressBar.maxValue)
+        {
+            GameOver = true;
+            MatchThreeEvents.InvokeOnMiniGameComplete();
+        }
 
         int scoreToAdd = score;
 
@@ -76,8 +88,13 @@ public class ScoreScript : MonoBehaviour
         AnimateAddScoreCoroutine_Ref = null;
     }
 
-    private void Setup(DifficultyLevel _)
+    private void Setup(DifficultyLevel difficulty)
     {
+        progressBar.maxValue = ((int)difficulty + 1) * 400.0f;
+        progressBar.value = 0;
+
+        GameOver = false;
+
         Score = 0;
         scoreUI.text = "0";
         if (tempAddScoreObject != null)

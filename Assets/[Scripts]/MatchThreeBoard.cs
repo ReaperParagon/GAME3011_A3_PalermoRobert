@@ -26,15 +26,15 @@ public class MatchThreeBoard : MonoBehaviour
     private void OnEnable()
     {
         MatchThreeEvents.MiniGameStart += Setup;
-        MatchThreeEvents.MiniGameComplete += StopGame;
-        MatchThreeEvents.TimerFinished += StopGame;
+        // MatchThreeEvents.MiniGameComplete += StopGame;
+        // MatchThreeEvents.TimerFinished += StopGame;
     }
 
     private void OnDisable()
     {
         MatchThreeEvents.MiniGameStart -= Setup;
-        MatchThreeEvents.MiniGameComplete -= StopGame;
-        MatchThreeEvents.TimerFinished -= StopGame;
+        // MatchThreeEvents.MiniGameComplete -= StopGame;
+        // MatchThreeEvents.TimerFinished -= StopGame;
     }
 
     private void UpdateTileContents()
@@ -227,6 +227,7 @@ public class MatchThreeBoard : MonoBehaviour
         // Destroy grid
         for (int i = boardObject.transform.childCount - 1; i >= 0; i--)
         {
+            boardObject.transform.GetChild(i).gameObject.GetComponent<MatchThreeTile>().StopGame();
             Destroy(boardObject.transform.GetChild(i).gameObject);
         }
 
@@ -245,7 +246,7 @@ public class MatchThreeBoard : MonoBehaviour
 
             MatchThreeTile matchTile = tile.GetComponent<MatchThreeTile>();
 
-            matchTile.Init(tile, new Vector2Int(gridX, gridY), ItemList.GetRandomItem());
+            matchTile.Init(tile, new Vector2Int(gridX, gridY), null);
 
             // Check our Grid size
             if (gridX > GridTiles.Count - 1)
@@ -263,6 +264,8 @@ public class MatchThreeBoard : MonoBehaviour
             {
                 // Set up neighbouring tiles
                 mTile.CloseTiles.AddRange(GetCloseTiles(mTile.GridPosition));
+
+                movingQueue.Enqueue(mTile);
             }
         }
 

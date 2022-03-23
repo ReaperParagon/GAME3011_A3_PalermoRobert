@@ -5,12 +5,16 @@ using UnityEngine.UI;
 
 public enum ColorType
 {
-    Red, Blue, Green
+    Red = 1,
+    Blue = 2,
+    Green = 4
 }
 
 public enum ItemType
 {
-    Circle, Square, Triangle
+    Circle = 1,
+    Square = 2,
+    Triangle = 4
 }
 
 [System.Serializable]
@@ -47,29 +51,35 @@ public class MatchThreeObjectList : ScriptableObject
         return GetRandomItemFromList(Items);
     }
 
-    public MatchThreeItem GetRandomItem(ColorType colorType)
+    public MatchThreeItem GetRandomItemFromColor(int colorType)
     {
         List<MatchThreeItem> list = new List<MatchThreeItem>();
 
         foreach (MatchThreeItem item in Items)
         {
-            if (item.itemColor == colorType)
+            if (((int)item.itemColor & colorType) != 0)
                 list.Add(item);
         }
 
-        return GetRandomItemFromList(list);
+        if (list.Count > 0)
+            return GetRandomItemFromList(list);
+
+        return GetRandomItem();
     }
 
-    public MatchThreeItem GetRandomItem(ItemType itemType)
+    public MatchThreeItem GetRandomItemFromType(int itemType)
     {
         List<MatchThreeItem> list = new List<MatchThreeItem>();
 
         foreach (MatchThreeItem item in Items)
         {
-            if (item.itemType == itemType)
+            if (((int)item.itemType & itemType) != 0)
                 list.Add(item);
         }
 
-        return GetRandomItemFromList(list);
+        if (list.Count > 0)
+            return GetRandomItemFromList(list);
+
+        return GetRandomItem();
     }
 }

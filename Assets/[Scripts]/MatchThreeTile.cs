@@ -140,7 +140,9 @@ public class MatchThreeTile : MonoBehaviour
         if (playingAnimation) return;
 
         playingAnimation = true;
-        animator.SetTrigger("AnimTrigger");
+
+        if (animator != null)
+            animator.SetTrigger("AnimTrigger");
     }
 
     public IEnumerator MoveColumnDown()
@@ -153,6 +155,8 @@ public class MatchThreeTile : MonoBehaviour
         // This tile is at the top
         if (top == null)
         {
+            if (board == null) yield break;
+
             SetTileItem(board.ItemList.GetRandomItem());
 
             // Play Animation
@@ -178,6 +182,11 @@ public class MatchThreeTile : MonoBehaviour
             // This tile is at the bottom, start moving down tiles on top
             yield return StartCoroutine(top.MoveColumnDown());
         }
+    }
+
+    public void StopGame()
+    {
+        StopAllCoroutines();
     }
 
 }
