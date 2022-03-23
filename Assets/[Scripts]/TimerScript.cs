@@ -57,7 +57,7 @@ public class TimerScript : MonoBehaviour
     {
         currentDifficulty = difficultyLevel;
 
-        timeRemaining = 30.0f * Mathf.FloorToInt(timerCurve.Evaluate((int)currentDifficulty));
+        timeRemaining = 20.0f * Mathf.FloorToInt(timerCurve.Evaluate((int)currentDifficulty));
         UpdateTimerText();
     }
     

@@ -1082,6 +1082,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  ScoreGoalMultiplier: 400
 --- !u!1 &746434007
 GameObject:
   m_ObjectHideFlags: 0
@@ -1489,6 +1490,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  ScoreGoalMultiplier: 400
 --- !u!114 &944699385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1501,14 +1503,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2a57874842d8c4385a0f65a9ef6e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridDimensions: {x: 8, y: 8}
+  GridDimensions: {x: 4, y: 4}
   boardObject: {fileID: 1801559927}
   TilePrefab: {fileID: 7237453030489502420, guid: 0765dd84e94dd304e8c52eb2fea690a0, type: 3}
   ItemLists:
   - {fileID: 11400000, guid: 2891b70bf7ce57d45acbbae19f38d93d, type: 2}
   - {fileID: 11400000, guid: 3e517be5c733705459c2533b40bb9d3d, type: 2}
   - {fileID: 11400000, guid: 9f4f161ddae1a1d41b29054c2c529c91, type: 2}
-  animationWaitTime: 0.166666
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2342,7 +2343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.69411767}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.69803923}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

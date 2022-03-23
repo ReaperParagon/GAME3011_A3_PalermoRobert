@@ -98,11 +98,13 @@ public class MatchThreeTile : MonoBehaviour
         if (Item == null)
         {
             icon.sprite = null;
+            icon.color = Color.white;
             icon.enabled = false;
             return;
         }
 
         icon.sprite = Item.itemSprite;
+        icon.color = Item.itemTint;
         icon.enabled = true;
     }
 

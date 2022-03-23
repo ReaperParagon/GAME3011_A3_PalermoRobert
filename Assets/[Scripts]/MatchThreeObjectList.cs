@@ -8,8 +8,11 @@ public enum ColorType
     Red = 1,
     Blue = 2,
     Green = 4,
-    None = 8,
-    All = 15
+    Cyan = 8,
+    Magenta = 16,
+    Yellow = 32,
+    None = 0,
+    All = 63
 }
 
 public enum ItemType
@@ -17,8 +20,9 @@ public enum ItemType
     Circle = 1,
     Square = 2,
     Triangle = 4,
-    Immovable = 8,
-    None = 16,
+    Down = 8,
+    Immovable = 16,
+    None = 0,
     All = 31
 }
 
@@ -26,12 +30,14 @@ public enum ItemType
 public class MatchThreeItem
 {
     public Sprite itemSprite;
+    public Color itemTint;
     public ColorType itemColor;
     public ItemType itemType;
 
     public MatchThreeItem(Sprite _itemSprite, ColorType _itemColor, ItemType _itemType)
     {
         itemSprite = _itemSprite;
+        itemTint = Color.white;
         itemColor = _itemColor;
         itemType = _itemType;
     }
@@ -66,7 +72,7 @@ public class MatchThreeObjectList : ScriptableObject
     {
         if (Bomb.itemType == ItemType.None) return;
 
-        if (score >= 10)
+        if (score >= 5)
             spawnBomb = true;
     }
 

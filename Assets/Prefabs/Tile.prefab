@@ -169,11 +169,12 @@ MonoBehaviour:
   icon: {fileID: 88420121000670453}
   Item:
     itemSprite: {fileID: 0}
+    itemTint: {r: 0, g: 0, b: 0, a: 0}
     itemColor: 0
     itemType: 0
   CloseTiles: []
   wasVisited: 0
-  animationWaitTime: 0.025
+  animationWaitTime: 0.1
 --- !u!114 &8687725536781985444
 MonoBehaviour:
   m_ObjectHideFlags: 0

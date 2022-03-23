@@ -19,6 +19,7 @@ public class ScoreScript : MonoBehaviour
     private float tickUpScore;
     private int tempAddingScore;
     private GameObject tempAddScoreObject;
+    public float ScoreGoalMultiplier = 400.0f;
 
     private IEnumerator AnimateAddScoreCoroutine_Ref = null;
     private bool GameOver = false;
@@ -46,6 +47,7 @@ public class ScoreScript : MonoBehaviour
     {
         if (GameOver) return;
 
+        // score *= score;
         Score += score;
         progressBar.value = Score;
 
@@ -96,7 +98,7 @@ public class ScoreScript : MonoBehaviour
 
     private void Setup(DifficultyLevel difficulty)
     {
-        progressBar.maxValue = ((int)difficulty + 1) * 300.0f;
+        progressBar.maxValue = ((int)difficulty + 1) * ScoreGoalMultiplier;
         progressBar.value = 0;
 
         GameOver = false;
