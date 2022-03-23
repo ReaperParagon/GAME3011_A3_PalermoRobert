@@ -173,7 +173,7 @@ MonoBehaviour:
     itemType: 0
   CloseTiles: []
   wasVisited: 0
-  animationWaitTime: 0.1
+  animationWaitTime: 0.025
 --- !u!114 &8687725536781985444
 MonoBehaviour:
   m_ObjectHideFlags: 0

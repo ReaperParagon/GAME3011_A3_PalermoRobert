@@ -14,18 +14,27 @@ public class MatchThreeBoard : MonoBehaviour
     public GameObject boardObject;
     [SerializeField]
     private GameObject TilePrefab;
-    public MatchThreeObjectList ItemList;
+    public List<MatchThreeObjectList> ItemLists = new List<MatchThreeObjectList>();
+    public MatchThreeObjectList ItemList
+    {
+        get
+        {
+            return ItemLists[(int)currentDifficulty];
+        }
+    }
 
     private List<MatchThreeTile> MatchTileList = new List<MatchThreeTile>();
     private List<MatchThreeTile> TempMatchTileList = new List<MatchThreeTile>();
     private IEnumerator CheckTilesCoroutine_Ref = null;
 
-    public float animationWaitTime = 1.0f;
     private Queue<MatchThreeTile> movingQueue = new Queue<MatchThreeTile>();
 
     private bool SettingUpBoard = true;
     public static bool allowInput { private set; get; } = false;
+    private DifficultyLevel currentDifficulty = DifficultyLevel.Easy;
 
+    private ColorType matchedColor = ColorType.None;
+    private ItemType matchedType = ItemType.None;
 
     private void OnEnable()
     {
@@ -110,20 +119,51 @@ public class MatchThreeBoard : MonoBehaviour
 
     private bool CheckIsMatched(MatchThreeTile tile)
     {
+        matchedColor = ColorType.None;
+        matchedType = ItemType.None;
+
         // Horizontal
-        CheckIsMatchedHorizontal(tile);
+        CheckIsMatchedHorizontalColor(tile);
 
         if (TempMatchTileList.Count >= 3)
+        {
             MatchTileList.AddRange(TempMatchTileList);
+            matchedColor = tile.Item.itemColor;
+        }
+
+        ResetVisited();
+        TempMatchTileList.Clear();
+
+        CheckIsMatchedHorizontalType(tile);
+
+        if (TempMatchTileList.Count >= 3)
+        {
+            MatchTileList.AddRange(TempMatchTileList);
+            matchedType = tile.Item.itemType;
+        }
 
         ResetVisited();
         TempMatchTileList.Clear();
 
         // Vertical
-        CheckIsMatchedVertical(tile);
+        CheckIsMatchedVerticalColor(tile);
 
         if (TempMatchTileList.Count >= 3)
+        {
             MatchTileList.AddRange(TempMatchTileList);
+            matchedColor = tile.Item.itemColor;
+        }
+
+        ResetVisited();
+        TempMatchTileList.Clear();
+
+        CheckIsMatchedVerticalType(tile);
+
+        if (TempMatchTileList.Count >= 3)
+        {
+            MatchTileList.AddRange(TempMatchTileList);
+            matchedType = tile.Item.itemType;
+        }
 
         ResetVisited();
         TempMatchTileList.Clear();
@@ -137,57 +177,135 @@ public class MatchThreeBoard : MonoBehaviour
         return false;
     }
 
-    private void CheckIsMatchedHorizontal(MatchThreeTile tile)
+    private void CheckIsMatchedHorizontalColor(MatchThreeTile tile)
     {
         tile.wasVisited = true;
         TempMatchTileList.Add(tile);
 
         // Left
         MatchThreeTile leftTile = tile.GetCloseTile(CloseTilePositions.Left);
-        if (leftTile != null && !leftTile.wasVisited && tile.Item != null && leftTile.Item == tile.Item)
+        if (leftTile != null && !leftTile.wasVisited && tile.Item != null && leftTile.Item != null && (leftTile.Item.itemColor & tile.Item.itemColor) != 0)
         {
-            CheckIsMatchedHorizontal(leftTile);
+            CheckIsMatchedHorizontalColor(leftTile);
         }
 
         // Right
         MatchThreeTile rightTile = tile.GetCloseTile(CloseTilePositions.Right);
-        if (rightTile != null && !rightTile.wasVisited && tile.Item != null && rightTile.Item == tile.Item)
+        if (rightTile != null && !rightTile.wasVisited && tile.Item != null && rightTile.Item != null && (rightTile.Item.itemColor & tile.Item.itemColor) != 0)
         {
-            CheckIsMatchedHorizontal(rightTile);
+            CheckIsMatchedHorizontalColor(rightTile);
         }
     }
 
-    private void CheckIsMatchedVertical(MatchThreeTile tile)
+    private void CheckIsMatchedHorizontalType(MatchThreeTile tile)
+    {
+        tile.wasVisited = true;
+        TempMatchTileList.Add(tile);
+
+        // Left
+        MatchThreeTile leftTile = tile.GetCloseTile(CloseTilePositions.Left);
+        if (leftTile != null && !leftTile.wasVisited && tile.Item != null && leftTile.Item != null && (leftTile.Item.itemType & tile.Item.itemType) != 0)
+        {
+            CheckIsMatchedHorizontalType(leftTile);
+        }
+
+        // Right
+        MatchThreeTile rightTile = tile.GetCloseTile(CloseTilePositions.Right);
+        if (rightTile != null && !rightTile.wasVisited && tile.Item != null && rightTile.Item != null && (rightTile.Item.itemType & tile.Item.itemType) != 0)
+        {
+            CheckIsMatchedHorizontalType(rightTile);
+        }
+    }
+
+    private void CheckIsMatchedVerticalColor(MatchThreeTile tile)
     {
         tile.wasVisited = true;
         TempMatchTileList.Add(tile);
 
         // Top
         MatchThreeTile topTile = tile.GetCloseTile(CloseTilePositions.Top);
-        if (topTile != null && !topTile.wasVisited && tile.Item != null && topTile.Item == tile.Item)
+        if (topTile != null && !topTile.wasVisited && tile.Item != null && topTile.Item != null && (topTile.Item.itemColor & tile.Item.itemColor) != 0)
         {
-            CheckIsMatchedVertical(topTile);
+            CheckIsMatchedVerticalColor(topTile);
         }
 
         // Bottom
         MatchThreeTile botTile = tile.GetCloseTile(CloseTilePositions.Bottom);
-        if (botTile != null && !botTile.wasVisited && tile.Item != null && botTile.Item == tile.Item)
+        if (botTile != null && !botTile.wasVisited && tile.Item != null && botTile.Item != null && (botTile.Item.itemColor & tile.Item.itemColor) != 0)
         {
-            CheckIsMatchedVertical(botTile);
+            CheckIsMatchedVerticalColor(botTile);
+        }
+    }
+
+    private void CheckIsMatchedVerticalType(MatchThreeTile tile)
+    {
+        tile.wasVisited = true;
+        TempMatchTileList.Add(tile);
+
+        // Top
+        MatchThreeTile topTile = tile.GetCloseTile(CloseTilePositions.Top);
+        if (topTile != null && !topTile.wasVisited && tile.Item != null && topTile.Item != null && (topTile.Item.itemType & tile.Item.itemType) != 0)
+        {
+            CheckIsMatchedVerticalType(topTile);
+        }
+
+        // Bottom
+        MatchThreeTile botTile = tile.GetCloseTile(CloseTilePositions.Bottom);
+        if (botTile != null && !botTile.wasVisited && tile.Item != null && botTile.Item != null && (botTile.Item.itemType & tile.Item.itemType) != 0)
+        {
+            CheckIsMatchedVerticalType(botTile);
         }
     }
 
     private bool MatchTiles()
     {
         // Calculate score
-        int score = MatchTileList.Count * MatchTileList.Count;
+        int score = Mathf.FloorToInt(MatchTileList.Count);
         MatchThreeEvents.InvokeOnAddScore(score);
+
+        bool bombTriggered = false;
 
         // Erase the matched tiles
         foreach (MatchThreeTile tile in MatchTileList)
         {
+            // Check if a bomb was matched
+            if (tile.Item != null && tile.Item.itemType == ItemType.All && tile.Item.itemColor == ColorType.All)
+                bombTriggered = true;
+
             movingQueue.Enqueue(tile);
             tile.Remove();
+        }
+
+        // Add all of the matched color and type
+        if (bombTriggered)
+        {
+            int bombScore = 0;
+
+            if (matchedColor != ColorType.None)
+            {
+                List<MatchThreeTile> cTiles = GetTilesOfColor(matchedColor);
+                bombScore += cTiles.Count;
+
+                foreach (MatchThreeTile tile in cTiles)
+                {
+                    movingQueue.Enqueue(tile);
+                    tile.Remove();
+                }
+            }
+
+            if (matchedType != ItemType.None)
+            {
+                List<MatchThreeTile> tTiles = GetTilesOfType(matchedType);
+                bombScore += tTiles.Count;
+
+                foreach (MatchThreeTile tile in tTiles)
+                {
+                    movingQueue.Enqueue(tile);
+                    tile.Remove();
+                }
+            }
+
+            MatchThreeEvents.InvokeOnAddScore(bombScore);
         }
 
         ResetVisited();
@@ -216,6 +334,38 @@ public class MatchThreeBoard : MonoBehaviour
         }
     }
 
+    private List<MatchThreeTile> GetTilesOfType(ItemType itemType)
+    {
+        List<MatchThreeTile> tilesOfType = new List<MatchThreeTile>();
+
+        foreach (List<MatchThreeTile> list in GridTiles)
+        {
+            foreach (MatchThreeTile tile in list)
+            {
+                if (tile.Item != null && tile.Item.itemType == itemType)
+                    tilesOfType.Add(tile);
+            }
+        }
+
+        return tilesOfType;
+    }
+
+    private List<MatchThreeTile> GetTilesOfColor(ColorType itemColor)
+    {
+        List<MatchThreeTile> tilesOfColor = new List<MatchThreeTile>();
+
+        foreach (List<MatchThreeTile> list in GridTiles)
+        {
+            foreach (MatchThreeTile tile in list)
+            {
+                if (tile.Item != null && tile.Item.itemColor == itemColor)
+                    tilesOfColor.Add(tile);
+            }
+        }
+
+        return tilesOfColor;
+    }
+
     private IEnumerator CheckAllTilesForMatch()
     {
         foreach (List<MatchThreeTile> list in GridTiles)
@@ -232,8 +382,10 @@ public class MatchThreeBoard : MonoBehaviour
         CheckTilesCoroutine_Ref = null;
     }
 
-    public void Setup(DifficultyLevel _)
+    public void Setup(DifficultyLevel difficulty)
     {
+        currentDifficulty = difficulty;
+
         // Destroy grid
         for (int i = boardObject.transform.childCount - 1; i >= 0; i--)
         {

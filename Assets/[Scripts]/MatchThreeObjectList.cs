@@ -7,14 +7,19 @@ public enum ColorType
 {
     Red = 1,
     Blue = 2,
-    Green = 4
+    Green = 4,
+    None = 8,
+    All = 15
 }
 
 public enum ItemType
 {
     Circle = 1,
     Square = 2,
-    Triangle = 4
+    Triangle = 4,
+    Immovable = 8,
+    None = 16,
+    All = 31
 }
 
 [System.Serializable]
@@ -36,6 +41,34 @@ public class MatchThreeItem
 public class MatchThreeObjectList : ScriptableObject
 {
     public List<MatchThreeItem> Items = new List<MatchThreeItem>();
+    public MatchThreeItem Bomb;
+
+    private bool spawnBomb = false;
+
+    private void OnEnable()
+    {
+        MatchThreeEvents.AddScore += SpawnBomb;
+        MatchThreeEvents.MiniGameStart += Setup;
+    }
+
+    private void OnDisable()
+    {
+        MatchThreeEvents.AddScore -= SpawnBomb;
+        MatchThreeEvents.MiniGameStart -= Setup;
+    }
+
+    private void Setup(DifficultyLevel _)
+    {
+        spawnBomb = false;
+    }
+
+    private void SpawnBomb(int score)
+    {
+        if (Bomb.itemType == ItemType.None) return;
+
+        if (score >= 10)
+            spawnBomb = true;
+    }
 
     private MatchThreeItem GetRandomItemFromList(List<MatchThreeItem> list)
     {
@@ -43,11 +76,24 @@ public class MatchThreeObjectList : ScriptableObject
 
         int index = Random.Range(0, list.Count);
         MatchThreeItem item = list[index];
+
+        if (item.itemType == ItemType.Immovable)
+        {
+            index = Random.Range(0, list.Count);
+            item = list[index];
+        }
+
         return item;
     }
 
     public MatchThreeItem GetRandomItem()
     {
+        if (spawnBomb)
+        {
+            spawnBomb = false;
+            return Bomb;
+        }
+
         return GetRandomItemFromList(Items);
     }
 

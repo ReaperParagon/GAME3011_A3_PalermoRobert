@@ -51,11 +51,15 @@ public class MatchThreeTile : MonoBehaviour
 
     public void OnDrag()
     {
+        if (Item != null && Item.itemType == ItemType.Immovable) return;
+
         currentTile = this;
     }
 
     public void OnRelease()
     {
+        if (Item.itemType == ItemType.Immovable) return;
+
         // If we are allowed input
         if (!MatchThreeBoard.allowInput) return;
 

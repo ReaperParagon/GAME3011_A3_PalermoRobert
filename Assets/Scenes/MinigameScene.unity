@@ -1501,10 +1501,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2a57874842d8c4385a0f65a9ef6e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridDimensions: {x: 5, y: 5}
+  GridDimensions: {x: 8, y: 8}
   boardObject: {fileID: 1801559927}
   TilePrefab: {fileID: 7237453030489502420, guid: 0765dd84e94dd304e8c52eb2fea690a0, type: 3}
-  ItemList: {fileID: 11400000, guid: 2891b70bf7ce57d45acbbae19f38d93d, type: 2}
+  ItemLists:
+  - {fileID: 11400000, guid: 2891b70bf7ce57d45acbbae19f38d93d, type: 2}
+  - {fileID: 11400000, guid: 3e517be5c733705459c2533b40bb9d3d, type: 2}
+  - {fileID: 11400000, guid: 9f4f161ddae1a1d41b29054c2c529c91, type: 2}
   animationWaitTime: 0.166666
 --- !u!1 &963194225
 GameObject:
@@ -2300,7 +2303,6 @@ GameObject:
   - component: {fileID: 1801559930}
   - component: {fileID: 1801559929}
   - component: {fileID: 1801559931}
-  - component: {fileID: 1801559932}
   m_Layer: 5
   m_Name: BoardHolder
   m_TagString: Untagged
@@ -2389,23 +2391,6 @@ MonoBehaviour:
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 1
   m_ConstraintCount: 16
---- !u!114 &1801559932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1801559927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b2a57874842d8c4385a0f65a9ef6e21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GridDimensions: {x: 5, y: 5}
-  boardObject: {fileID: 0}
-  TilePrefab: {fileID: 7237453030489502420, guid: 0765dd84e94dd304e8c52eb2fea690a0, type: 3}
-  ItemList: {fileID: 11400000, guid: 2891b70bf7ce57d45acbbae19f38d93d, type: 2}
-  animationWaitTime: 0.166666
 --- !u!1 &1954921310
 GameObject:
   m_ObjectHideFlags: 0

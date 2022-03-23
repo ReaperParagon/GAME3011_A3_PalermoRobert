@@ -27,14 +27,20 @@ public class ScoreScript : MonoBehaviour
     {
         MatchThreeEvents.AddScore += AddScore;
         MatchThreeEvents.MiniGameStart += Setup;
+        MatchThreeEvents.TimerFinished += TimerGameOver;
     }
 
     private void OnDisable()
     {
         MatchThreeEvents.AddScore -= AddScore;
         MatchThreeEvents.MiniGameStart -= Setup;
+        MatchThreeEvents.TimerFinished -= TimerGameOver;
     }
 
+    private void TimerGameOver()
+    {
+        GameOver = true;
+    }
 
     private void AddScore(int score)
     {
@@ -90,7 +96,7 @@ public class ScoreScript : MonoBehaviour
 
     private void Setup(DifficultyLevel difficulty)
     {
-        progressBar.maxValue = ((int)difficulty + 1) * 400.0f;
+        progressBar.maxValue = ((int)difficulty + 1) * 300.0f;
         progressBar.value = 0;
 
         GameOver = false;
