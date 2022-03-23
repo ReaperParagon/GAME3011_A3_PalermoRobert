@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class MatchThreeBoard : MonoBehaviour
 {
-    [SerializeField]
+    public List<Vector2Int> GridSizes = new List<Vector2Int>();
+
     private Vector2Int GridDimensions;
     private int GridCount { get { return GridDimensions.x * GridDimensions.y; } }
     private List<List<MatchThreeTile>> GridTiles = new List<List<MatchThreeTile>>();
@@ -399,6 +400,8 @@ public class MatchThreeBoard : MonoBehaviour
     public void Setup(DifficultyLevel difficulty)
     {
         currentDifficulty = difficulty;
+
+        GridDimensions = GridSizes[(int)difficulty];
 
         // Destroy grid
         for (int i = boardObject.transform.childCount - 1; i >= 0; i--)

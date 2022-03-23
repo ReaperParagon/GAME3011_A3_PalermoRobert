@@ -1422,7 +1422,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 8
+      value: 9
       inSlope: Infinity
       outSlope: Infinity
       tangentMode: 103
@@ -1431,7 +1431,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 6
+      value: 8
       inSlope: Infinity
       outSlope: Infinity
       tangentMode: 103
@@ -1440,7 +1440,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 2
-      value: 4
+      value: 7
       inSlope: Infinity
       outSlope: Infinity
       tangentMode: 103
@@ -1503,7 +1503,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2a57874842d8c4385a0f65a9ef6e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridDimensions: {x: 4, y: 4}
+  GridSizes:
+  - {x: 4, y: 5}
+  - {x: 5, y: 6}
+  - {x: 5, y: 7}
   boardObject: {fileID: 1801559927}
   TilePrefab: {fileID: 7237453030489502420, guid: 0765dd84e94dd304e8c52eb2fea690a0, type: 3}
   ItemLists:

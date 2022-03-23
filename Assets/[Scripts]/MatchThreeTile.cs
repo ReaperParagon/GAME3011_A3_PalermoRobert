@@ -27,6 +27,19 @@ public class MatchThreeTile : MonoBehaviour
     public float animationWaitTime = 0.1666f;
     private bool playingAnimation = false;
 
+    private void OnEnable()
+    {
+        MatchThreeEvents.MiniGameComplete += StopGame;
+        MatchThreeEvents.TimerFinished += StopGame;
+    }
+
+    private void OnDisable()
+    {
+        MatchThreeEvents.MiniGameComplete -= StopGame;
+        MatchThreeEvents.TimerFinished -= StopGame;
+        StopGame();
+    }
+
     private void Awake()
     {
         if (icon == null)

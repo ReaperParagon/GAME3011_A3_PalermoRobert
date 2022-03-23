@@ -47,7 +47,7 @@ public class ScoreScript : MonoBehaviour
     {
         if (GameOver) return;
 
-        // score *= score;
+        score *= score;
         Score += score;
         progressBar.value = Score;
 
