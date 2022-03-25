@@ -11,16 +11,17 @@ public enum ColorType
     Cyan = 8,
     Magenta = 16,
     Yellow = 32,
+    White = 64,
     None = 0,
-    All = 63
+    All = 127
 }
 
 public enum ItemType
 {
-    Circle = 1,
-    Square = 2,
-    Triangle = 4,
-    Down = 8,
+    Default = 1,
+    Heart = 2,
+    Octagon = 4,
+    Tear = 8,
     Immovable = 16,
     None = 0,
     All = 31

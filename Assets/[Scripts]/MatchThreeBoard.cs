@@ -52,12 +52,7 @@ public class MatchThreeBoard : MonoBehaviour
 
     private void UpdateTileContents()
     {
-        // Disable player interaction
-
         StartCoroutine(FlushQueue());
-
-        // Re-enable player interaction
-
     }
 
     private IEnumerator FlushQueue()

@@ -7,7 +7,8 @@ public enum DifficultyLevel
 {
     Easy    = 0,
     Medium  = 1,
-    Hard    = 2
+    Hard    = 2,
+    Chaos   = 8
 }
 
 public class TimerScript : MonoBehaviour
