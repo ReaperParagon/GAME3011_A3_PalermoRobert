@@ -60,4 +60,14 @@ public class MatchThreeEvents
         AddScore?.Invoke(score);
     }
 
+    /// Bomb Triggered ///
+
+    public delegate void OnBomb();
+
+    public static event OnBomb BombTriggered;
+
+    public static void InvokeOnBomb()
+    {
+        BombTriggered?.Invoke();
+    }
 }

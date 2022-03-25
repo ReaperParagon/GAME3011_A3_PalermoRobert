@@ -300,6 +300,8 @@ public class MatchThreeBoard : MonoBehaviour
         // Add all of the matched color and type
         if (bombTriggered)
         {
+            MatchThreeEvents.InvokeOnBomb();
+
             if (matchedColor != ColorType.None)
             {
                 List<MatchThreeTile> cTiles = GetTilesOfColor(matchedColor);
