@@ -72,6 +72,8 @@ public class MatchThreeBoard : MonoBehaviour
             SettingUpBoard = false;
             allowInput = true;
 
+            yield return FindObjectOfType<MatchThreeMinigameManager>().DisplayHintMessage("Start!");
+
             // Pause, say start, etc.
 
             MatchThreeEvents.InvokeOnBoardSetup();
@@ -452,6 +454,8 @@ public class MatchThreeBoard : MonoBehaviour
 
         SettingUpBoard = true;
         allowInput = false;
+
+        FindObjectOfType<MatchThreeMinigameManager>().Hint(ItemList.HintMessage);
 
         // Check for matches on start
         CheckAllTiles();

@@ -7,9 +7,14 @@ public class MatchThreeMinigameManager : MonoBehaviour
 {
     public GameObject resultsScreen;
     public TextMeshProUGUI resultsText;
+    public GameObject hintScreen;
+    public Animator hintAnimator;
+    public float hintScreenTime = 3.0f;
 
     private void OnEnable()
     {
+        hintScreen.SetActive(false);
+
         MatchThreeEvents.MiniGameStart += Setup;
         MatchThreeEvents.MiniGameComplete += GameComplete;
         MatchThreeEvents.TimerFinished += OutOfTime;
@@ -52,5 +57,26 @@ public class MatchThreeMinigameManager : MonoBehaviour
     private void Setup(DifficultyLevel _)
     {
         resultsScreen.SetActive(false);
+    }
+
+    public void Hint(string msg)
+    {
+        StartCoroutine(DisplayHintMessage(msg));
+    }
+
+    public IEnumerator DisplayHintMessage(string msg)
+    {
+        hintScreen.SetActive(true);
+
+        yield return new WaitForFixedUpdate();
+
+        var text = hintScreen.GetComponent<TextMeshProUGUI>();
+        text.text = msg;
+
+        hintAnimator.SetTrigger("AnimTrigger");
+
+        yield return new WaitForSeconds(hintScreenTime);
+
+        hintScreen.SetActive(false);
     }
 }

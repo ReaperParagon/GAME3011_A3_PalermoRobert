@@ -49,6 +49,8 @@ public class MatchThreeObjectList : ScriptableObject
     public List<MatchThreeItem> Items = new List<MatchThreeItem>();
     public MatchThreeItem Bomb;
 
+    public string HintMessage = "";
+
     private bool spawnBomb = false;
 
     private void OnEnable()

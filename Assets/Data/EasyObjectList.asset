@@ -30,3 +30,4 @@ MonoBehaviour:
     itemTint: {r: 0, g: 0, b: 0, a: 0}
     itemColor: 0
     itemType: 0
+  HintMessage: Click and Drag a tile to try and swap it!

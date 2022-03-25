@@ -37,6 +37,7 @@ public class MatchThreeTile : MonoBehaviour
     {
         MatchThreeEvents.MiniGameComplete -= StopGame;
         MatchThreeEvents.TimerFinished -= StopGame;
+
         StopGame();
     }
 

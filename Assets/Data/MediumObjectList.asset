@@ -34,3 +34,4 @@ MonoBehaviour:
     itemTint: {r: 1, g: 1, b: 1, a: 1}
     itemColor: 63
     itemType: 31
+  HintMessage: Match 5 in a row to create a bomb!
