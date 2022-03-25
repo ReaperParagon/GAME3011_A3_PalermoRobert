@@ -109,6 +109,8 @@ public class MatchThreeTile : MonoBehaviour
 
     private void SetupItem()
     {
+        if (icon == null) return;
+
         if (Item == null)
         {
             icon.sprite = null;
@@ -210,6 +212,8 @@ public class MatchThreeTile : MonoBehaviour
     public void StopGame()
     {
         StopAllCoroutines();
+
+        Destroy(gameObject);
     }
 
 }
