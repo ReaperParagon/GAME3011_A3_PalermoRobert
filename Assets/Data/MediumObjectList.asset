@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: MediumObjectList
   m_EditorClassIdentifier: 
   Items:
-  - itemSprite: {fileID: 21300000, guid: 57db124b2bee20f479407854d48276bf, type: 3}
+  - itemSprite: {fileID: 21300000, guid: ec519fa28e46b9e458989977229b83e2, type: 3}
     itemTint: {r: 0, g: 0, b: 1, a: 1}
     itemColor: 2
     itemType: 0
-  - itemSprite: {fileID: 21300000, guid: 57db124b2bee20f479407854d48276bf, type: 3}
+  - itemSprite: {fileID: 21300000, guid: 0a016d00f6aeff948b7cfd9ecec429b2, type: 3}
     itemTint: {r: 0, g: 1, b: 0, a: 1}
     itemColor: 4
     itemType: 0
-  - itemSprite: {fileID: 21300000, guid: 57db124b2bee20f479407854d48276bf, type: 3}
+  - itemSprite: {fileID: 21300000, guid: 559276b565421e8439bf29cb6bdc56a1, type: 3}
     itemTint: {r: 1, g: 0, b: 0, a: 1}
     itemColor: 1
     itemType: 0
-  - itemSprite: {fileID: 21300000, guid: 57db124b2bee20f479407854d48276bf, type: 3}
+  - itemSprite: {fileID: 21300000, guid: 16841a3c86e6a844c88e407a0ddada0d, type: 3}
     itemTint: {r: 1, g: 1, b: 0, a: 1}
     itemColor: 32
     itemType: 0
   Bomb:
-    itemSprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+    itemSprite: {fileID: 21300000, guid: 3618215fa7246b04d96705f96d17a424, type: 3}
     itemTint: {r: 1, g: 1, b: 1, a: 1}
     itemColor: 63
     itemType: 31
